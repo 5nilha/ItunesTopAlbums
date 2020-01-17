@@ -1,0 +1,6 @@
+framework module Pods_ItunesTopAlbumsTests {
+  umbrella header "Pods-ItunesTopAlbumsTests-umbrella.h"
+
+  export *
+  module * { export * }
+}
