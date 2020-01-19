@@ -22,6 +22,10 @@
 		3EF38BDD23D13DE200040F32 /* MockDataJSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF38BCD23D121A700040F32 /* MockDataJSON.swift */; };
 		3EF38BDF23D1721A00040F32 /* AlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF38BDE23D1721A00040F32 /* AlbumViewController.swift */; };
 		3EF38BE723D1B1DF00040F32 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF38BE623D1B1DF00040F32 /* Date+Extension.swift */; };
+		3EF38BE923D416A000040F32 /* String+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF38BE823D416A000040F32 /* String+Extension.swift */; };
+		3EF38BEB23D4236400040F32 /* APIHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF38BEA23D4236400040F32 /* APIHandler.swift */; };
+		3EF38BED23D423AC00040F32 /* DataParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF38BEC23D423AC00040F32 /* DataParser.swift */; };
+		3EF38BF123D42CA200040F32 /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3EF38BF023D42CA200040F32 /* ImageService.swift */; };
 		CBB7392043AB70F9FCC23AEC /* Pods_ItunesTopAlbums.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A1BDEE7BDECB310AE965DA57 /* Pods_ItunesTopAlbums.framework */; };
 		E48A8D1D8C8315BCB4D95C55 /* Pods_ItunesTopAlbumsTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 544AB05508AF74C51EFE2031 /* Pods_ItunesTopAlbumsTests.framework */; };
 /* End PBXBuildFile section */
@@ -55,6 +59,10 @@
 		3EF38BDB23D13AB000040F32 /* AlbumsTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumsTableViewController.swift; sourceTree = "<group>"; };
 		3EF38BDE23D1721A00040F32 /* AlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumViewController.swift; sourceTree = "<group>"; };
 		3EF38BE623D1B1DF00040F32 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
+		3EF38BE823D416A000040F32 /* String+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+Extension.swift"; sourceTree = "<group>"; };
+		3EF38BEA23D4236400040F32 /* APIHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIHandler.swift; sourceTree = "<group>"; };
+		3EF38BEC23D423AC00040F32 /* DataParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataParser.swift; sourceTree = "<group>"; };
+		3EF38BF023D42CA200040F32 /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
 		544AB05508AF74C51EFE2031 /* Pods_ItunesTopAlbumsTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ItunesTopAlbumsTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F1B4467B29D0CD49EECFF08 /* Pods-ItunesTopAlbums.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ItunesTopAlbums.debug.xcconfig"; path = "Target Support Files/Pods-ItunesTopAlbums/Pods-ItunesTopAlbums.debug.xcconfig"; sourceTree = "<group>"; };
 		A1BDEE7BDECB310AE965DA57 /* Pods_ItunesTopAlbums.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ItunesTopAlbums.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -106,11 +114,11 @@
 		3EF38BA623D1160600040F32 /* ItunesTopAlbums */ = {
 			isa = PBXGroup;
 			children = (
+				3EF38BEE23D42C8500040F32 /* Services */,
 				3EF38BE323D1B18600040F32 /* Extensions */,
 				3EF38BD823D13A1000040F32 /* View */,
 				3EF38BD323D12E9100040F32 /* ViewModel */,
 				3EF38BD023D1251C00040F32 /* Model */,
-				3EF38BBB23D1168900040F32 /* Webservice */,
 				3EF38BA723D1160600040F32 /* AppDelegate.swift */,
 				3EF38BA923D1160600040F32 /* SceneDelegate.swift */,
 				3EF38BB023D1160D00040F32 /* Assets.xcassets */,
@@ -123,8 +131,9 @@
 		3EF38BBB23D1168900040F32 /* Webservice */ = {
 			isa = PBXGroup;
 			children = (
-				3EF38BCC23D1217700040F32 /* MockData */,
 				3EF38BBC23D116A300040F32 /* WebService.swift */,
+				3EF38BEA23D4236400040F32 /* APIHandler.swift */,
+				3EF38BEC23D423AC00040F32 /* DataParser.swift */,
 			);
 			path = Webservice;
 			sourceTree = "<group>";
@@ -177,8 +186,27 @@
 			isa = PBXGroup;
 			children = (
 				3EF38BE623D1B1DF00040F32 /* Date+Extension.swift */,
+				3EF38BE823D416A000040F32 /* String+Extension.swift */,
 			);
 			path = Extensions;
+			sourceTree = "<group>";
+		};
+		3EF38BEE23D42C8500040F32 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				3EF38BCC23D1217700040F32 /* MockData */,
+				3EF38BBB23D1168900040F32 /* Webservice */,
+				3EF38BEF23D42C8B00040F32 /* ImageService */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		3EF38BEF23D42C8B00040F32 /* ImageService */ = {
+			isa = PBXGroup;
+			children = (
+				3EF38BF023D42CA200040F32 /* ImageService.swift */,
+			);
+			path = ImageService;
 			sourceTree = "<group>";
 		};
 		82655243C34CED6D1D86B998 /* Pods */ = {
@@ -368,16 +396,20 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3EF38BEB23D4236400040F32 /* APIHandler.swift in Sources */,
 				3EF38BD523D1310700040F32 /* AlbumViewModel.swift in Sources */,
 				3EF38BE723D1B1DF00040F32 /* Date+Extension.swift in Sources */,
 				3EF38BD723D1349F00040F32 /* AlbumsListViewModel.swift in Sources */,
 				3EF38BDA23D13A3100040F32 /* AlbumListCell.swift in Sources */,
+				3EF38BE923D416A000040F32 /* String+Extension.swift in Sources */,
 				3EF38BDC23D13AB000040F32 /* AlbumsTableViewController.swift in Sources */,
 				3EF38BA823D1160600040F32 /* AppDelegate.swift in Sources */,
+				3EF38BF123D42CA200040F32 /* ImageService.swift in Sources */,
 				3EF38BBD23D116A300040F32 /* WebService.swift in Sources */,
 				3EF38BDF23D1721A00040F32 /* AlbumViewController.swift in Sources */,
 				3EF38BAA23D1160600040F32 /* SceneDelegate.swift in Sources */,
 				3EF38BD223D1254B00040F32 /* Album.swift in Sources */,
+				3EF38BED23D423AC00040F32 /* DataParser.swift in Sources */,
 				3EF38BDD23D13DE200040F32 /* MockDataJSON.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

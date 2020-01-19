@@ -52,19 +52,4 @@ struct AlbumViewModel {
     var albumUrl: String {
         return self.album.albumUrl
     }
-    
-    func loadAlbumImage(completion: @escaping (UIImage) -> ())  {
-        if let imageURL = URL(string: self.album.thumbnailImageURL) {
-            print(imageURL)
-            DispatchQueue.global().async {
-                if let data = try? Data(contentsOf: imageURL) {
-                    print(data)
-                    if let image = UIImage(data: data) {
-                        completion(image)
-                    }
-                }
-            }
-        }
-    }
-    
 }

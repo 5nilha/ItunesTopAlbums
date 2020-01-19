@@ -17,27 +17,42 @@ class AlbumViewController: UIViewController {
 
         if album != nil {
             self.setupView()
-            print("date: \(album.releaseDate)")
-            print(album.genres)
         } else {
             self.navigationController?.popViewController(animated: true)
         }
     }
     
-    deinit{
+    deinit {
         print("AlbumViewController deinitiated")
     }
     
-    // View's Properties
-//    lazy var scrollView: UIScrollView = {
-//        let scrollView = UIScrollView()
-//        scrollView.addSubview(vStack)
-//        scrollView.translatesAutoresizingMaskIntoConstraints = false
-//        scrollView.frame = self.view.bounds
-//        return scrollView
-//    }()
-//    
-    lazy var vStack: UIStackView = {
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        scrollView.contentSize = CGSize(width: self.view.bounds.width - 100, height: 1000)
+    }
+    
+//     View's Properties
+    private lazy var scrollView: UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.addSubview(backView)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.frame = self.view.bounds
+        scrollView.isScrollEnabled = true
+       
+        return scrollView
+    }()
+
+    
+    private var backView: UIView {
+        let backView = UIView()
+        backView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 1000)
+        backView.backgroundColor = .blue
+        backView.addSubview(vStack)
+        backView.translatesAutoresizingMaskIntoConstraints = false
+        return backView
+    }
+    
+    private var vStack: UIStackView  {
         let topStack = UIStackView()
         topStack.translatesAutoresizingMaskIntoConstraints = false
         topStack.distribution = .fill
@@ -66,8 +81,10 @@ class AlbumViewController: UIViewController {
         
         topStack.addArrangedSubview(firstStack)
         topStack.addArrangedSubview(secondStack)
+        
+        topStack.widthAnchor.constraint(equalToConstant: self.view.bounds.width - 60).isActive = true
         return topStack
-    }()
+    }
     
     var albumImageView: UIImageView = {
         let imageSize: CGFloat = 150.0
@@ -135,44 +152,32 @@ class AlbumViewController: UIViewController {
         return button
     }
     
-    @objc func goToAlbumPage() {
+    @objc private func goToAlbumPage() {
         if let url  = URL(string: "https://music.apple.com/us/album/jackboys/1492785997?app=music") {
             if UIApplication.shared.canOpenURL(url as URL) {
                 UIApplication.shared.open(url, options: [:], completionHandler: nil)
             }
         }
-         
     }
     
     private func setupView() {
-//        self.view.addSubview(scrollView)
-        self.view.addSubview(vStack)
-        self.view.addSubview(itunesButton)
+        self.view.addSubview(scrollView)
+    
+//        self.view.addSubview(vStack)
+//        self.view.addSubview(itunesButton)
         self.albumNameLabel.text = album.name
         self.artistNameLabel.text = "by \(album.artistName)"
         self.copyrightLabel.text = album.copyrightInfo
         self.genreLabel.text = album.genres
         self.releasedAt.text = "Released: \(album.releaseDate)"
-//
-//        scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30).isActive = true
-//        scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive = true
-//        scrollView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 100).isActive = true
-//        scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
 
+        scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30).isActive = true
+        scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive = true
+        scrollView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
+        scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
         
-        vStack.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30).isActive = true
-        vStack.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive = true
-        vStack.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 100).isActive = true
-//        vStack.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -100).isActive = true
-        vStack.frame = self.view.bounds
-        
-        
-       
-        
-        album.loadAlbumImage { (image) in
-            DispatchQueue.main.async {
-                self.albumImageView.image = image
-            }
-        }
+       ImageService.getImage(withStringURL: album.thumbnailImageURL) { [weak self] (image) in
+           self?.albumImageView.image = image
+       }
     }
 }

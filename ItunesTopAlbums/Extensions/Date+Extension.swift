@@ -19,7 +19,5 @@ extension Date {
         let calendar = Calendar.current
         
         return "\(monthString) \(calendar.component(.day, from: self)), \(calendar.component(.year, from: self))"
-        
     }
-    
 }

@@ -11,11 +11,12 @@ import UIKit
 class AlbumsTableViewController: UITableViewController {
     
     var albumsListViewModel : AlbumsListViewModel!
+    static let identifier = "AlbumsTableViewController"
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.setListView()
         self.albumsListViewModel = AlbumsListViewModel(delegate: self)
+        self.setListView()
     }
     
     private func setListView() {
@@ -30,6 +31,10 @@ class AlbumsTableViewController: UITableViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         
+    }
+    
+    deinit {
+        print("AlbumsTableViewController deinitiated")
     }
     
 }

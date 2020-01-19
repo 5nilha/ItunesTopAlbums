@@ -8,26 +8,58 @@
 
 import XCTest
 
+@testable import ItunesTopAlbums
+
 class ItunesTopAlbumsTests: XCTestCase {
+    
+    var albumsTableVC: AlbumsTableViewController!
 
     override func setUp() {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+        albumsTableVC = AlbumsTableViewController()
+        _ = albumsTableVC.view
+        albumsTableVC.albumsListViewModel.testAlbumsListViewModel(dataJson: MockDataJson.data)
+        
     }
 
     override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+        albumsTableVC = nil
     }
 
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    func testAlbumTableVC() {
+        XCTAssertEqual(albumsTableVC.tableView.numberOfRows(inSection: 0), MockDataJson.data.count)
+        
+//        let cell: AlbumListCell!
+//        let tableView: UITableView = albumsTableVC.tableView
+//
+//        for index in 0..<albumsTableVC.albumsListViewModel.numOfAlbums {
+////            cell = albumsTableVC.UI
+////            let album = albumsTableVC.albumsListViewModel.albumAtIndex(indexPath: )
+//        }
     }
-
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        measure {
-            // Put the code you want to measure the time of here.
+    
+    func testDetailVC() {
+        let albumsVC = AlbumViewController()
+        
+        for album in albumsTableVC.albumsListViewModel.albumsList {
+            albumsVC.album = album
+            _ = albumsVC.view
+            assert(albumsVC.albumNameLabel.text != nil)
+            assert(albumsVC.artistNameLabel.text != nil)
+            assert(albumsVC.copyrightLabel.text != nil)
+            assert(albumsVC.releasedAt.text != nil)
+            assert(albumsVC.genreLabel.text != nil)
         }
     }
-
+    
+    func testAPIResquest() {
+        WebServiceHandler(apiURL: "https://rss.itunes.apple.com/api/v1/us/apple-music/top-albums/all/100/explicit.json").get { (jsonData) in
+            guard let json = jsonData,
+            let feed: [String : Any] = json["feed"] as? [String : Any],
+            let resultsData: [Any] = feed["results"] as? [Any]
+            else { return }
+            
+            let count = resultsData.count
+            assert(resultsData.count > 0, "Returning \(count) Albums")
+        }
+    }
 }

@@ -12,7 +12,6 @@ class AlbumListCell: UITableViewCell {
     
     static let cellIdentifier = "AlbumListCell"
     
-    
     lazy var vStack: UIStackView = {
         let vStack = UIStackView()
         vStack.distribution = .fillProportionally
@@ -60,8 +59,6 @@ class AlbumListCell: UITableViewCell {
 
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-
-       
     }
     
     func setupUI(album: AlbumViewModel) {
@@ -71,18 +68,8 @@ class AlbumListCell: UITableViewCell {
         self.contentView.addSubview(albumImageView)
         self.contentView.addSubview(vStack)
         
-        if let imageURL = URL(string: album.thumbnailImageURL) {
-            print(imageURL)
-            DispatchQueue.global().async {
-                if let data = try? Data(contentsOf: imageURL) {
-                    print(data)
-                    if let image = UIImage(data: data) {
-                        DispatchQueue.main.async { [weak self] in
-                            self?.albumImageView.image = image
-                        }
-                    }
-                }
-            }
+        ImageService.getImage(withStringURL: album.thumbnailImageURL) { [weak self] (image) in
+            self?.albumImageView.image = image
         }
         
         vStack.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: albumImageView.bounds.width + 20.0).isActive = true

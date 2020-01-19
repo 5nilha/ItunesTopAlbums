@@ -25,8 +25,8 @@ struct Album {
         let releaseDate = dataJson["releaseDate"] as? String,
         let copyrightInfo = dataJson["copyright"] as? String,
         let albumUrl = dataJson["url"] as? String
-            else {
-                return nil
+        else {
+            return nil
         }
         
         self.name = name
@@ -34,21 +34,11 @@ struct Album {
         self.thumbnailImageURL = thumbnailImageURL
         self.copyrightInfo = copyrightInfo
         self.albumUrl = albumUrl
-        self.releaseDate = self.convertDate(dateString: releaseDate)
+        self.releaseDate = releaseDate.stringIsoDateToDate
         for genre in genres {
             if let albumGenre = genre["name"] as? String {
                 self.genres.append(albumGenre)
             }
         }
-    }
-    
-    func convertDate(dateString: String) -> Date? {
-        let isoDate = dateString
-
-        let dateFormatter = DateFormatter()
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let date = dateFormatter.date(from:isoDate)
-        return date
     }
 }
