@@ -24,18 +24,6 @@ class ItunesTopAlbumsTests: XCTestCase {
     override func tearDown() {
         albumsTableVC = nil
     }
-
-    func testAlbumTableVC() {
-        XCTAssertEqual(albumsTableVC.tableView.numberOfRows(inSection: 0), MockDataJson.data.count)
-        
-//        let cell: AlbumListCell!
-//        let tableView: UITableView = albumsTableVC.tableView
-//
-//        for index in 0..<albumsTableVC.albumsListViewModel.numOfAlbums {
-////            cell = albumsTableVC.UI
-////            let album = albumsTableVC.albumsListViewModel.albumAtIndex(indexPath: )
-//        }
-    }
     
     func testDetailVC() {
         let albumsVC = AlbumViewController()

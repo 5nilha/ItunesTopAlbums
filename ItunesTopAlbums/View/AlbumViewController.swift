@@ -26,80 +26,25 @@ class AlbumViewController: UIViewController {
         print("AlbumViewController deinitiated")
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        scrollView.contentSize = CGSize(width: self.view.bounds.width - 100, height: 1000)
-    }
     
 //     View's Properties
-    private lazy var scrollView: UIScrollView = {
-        let scrollView = UIScrollView()
-        scrollView.addSubview(backView)
-        scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.frame = self.view.bounds
-        scrollView.isScrollEnabled = true
-       
-        return scrollView
-    }()
-
-    
-    private var backView: UIView {
-        let backView = UIView()
-        backView.frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 1000)
-        backView.backgroundColor = .blue
-        backView.addSubview(vStack)
-        backView.translatesAutoresizingMaskIntoConstraints = false
-        return backView
-    }
-    
-    private var vStack: UIStackView  {
-        let topStack = UIStackView()
-        topStack.translatesAutoresizingMaskIntoConstraints = false
-        topStack.distribution = .fill
-        topStack.alignment = .center
-        topStack.axis = .vertical
-        topStack.spacing = 20
-
-        let firstStack = UIStackView()
-        firstStack.distribution = .fillProportionally
-        firstStack.alignment = .fill
-        firstStack.axis = .vertical
-        firstStack.spacing = 15
-        
-        let secondStack = UIStackView()
-        secondStack.distribution = .fillProportionally
-        secondStack.alignment = .fill
-        secondStack.axis = .vertical
-        secondStack.spacing = 10
-        
-        firstStack.addArrangedSubview(albumImageView)
-        firstStack.addArrangedSubview(albumNameLabel)
-        secondStack.addArrangedSubview(artistNameLabel)
-        secondStack.addArrangedSubview(genreLabel)
-        secondStack.addArrangedSubview(releasedAt)
-        secondStack.addArrangedSubview(copyrightLabel)
-        
-        topStack.addArrangedSubview(firstStack)
-        topStack.addArrangedSubview(secondStack)
-        
-        topStack.widthAnchor.constraint(equalToConstant: self.view.bounds.width - 60).isActive = true
-        return topStack
-    }
-    
     var albumImageView: UIImageView = {
-        let imageSize: CGFloat = 150.0
-        let albumImageView = UIImageView(frame: CGRect(x: 10, y: 10, width: imageSize + 50.0, height: imageSize))
+        let imageSize: CGFloat = UIScreen.main.bounds.width * 0.60
+        let albumImageView = UIImageView(frame: CGRect(x: 10, y: 10, width: imageSize, height: imageSize))
         albumImageView.layer.masksToBounds = true
         albumImageView.clipsToBounds = true
         albumImageView.autoresizingMask = .flexibleHeight
         albumImageView.contentMode = .scaleAspectFit
+        albumImageView.translatesAutoresizingMaskIntoConstraints = false
         return albumImageView
     }()
+    
     var albumNameLabel: UILabel = {
         let label = UILabel(frame: .zero)
         label.numberOfLines = 0
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 22, weight: .medium)
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -108,15 +53,17 @@ class AlbumViewController: UIViewController {
         label.numberOfLines = 1
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 17, weight: .regular)
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
     var copyrightLabel: UILabel = {
-        let label = UILabel(frame: CGRect(origin: .zero, size: CGSize(width: 150, height: 50)))
-        label.numberOfLines = 4
+        let label = UILabel()
+        label.numberOfLines = 0
         label.textColor = .lightGray
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 12, weight: .light)
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -126,6 +73,7 @@ class AlbumViewController: UIViewController {
         label.textColor = .lightGray
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
@@ -135,22 +83,20 @@ class AlbumViewController: UIViewController {
         label.textColor = .lightGray
         label.textAlignment = .center
         label.font = .systemFont(ofSize: 14, weight: .regular)
+        label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
     
-    var itunesButton: UIButton {
-        let btnHeight: CGFloat = 50
-        let btnWidth: CGFloat = self.view.bounds.width - 40
-        
+    var itunesButton: UIButton = {
         let button = UIButton(type: .system)
         button.backgroundColor = .black
         button.setTitle("Open Album", for: .normal)
         button.setTitleColor(.white, for: .normal)
-        button.layer.cornerRadius = btnHeight / 2
+        button.layer.cornerRadius = 18
         button.addTarget(self, action: #selector(goToAlbumPage), for: .touchUpInside)
-        button.frame = CGRect(origin: CGPoint(x: 20, y: self.view.bounds.height - 60), size: CGSize(width: btnWidth, height: btnHeight))
+        button.translatesAutoresizingMaskIntoConstraints = false
         return button
-    }
+    }()
     
     @objc private func goToAlbumPage() {
         if let url  = URL(string: "https://music.apple.com/us/album/jackboys/1492785997?app=music") {
@@ -161,20 +107,51 @@ class AlbumViewController: UIViewController {
     }
     
     private func setupView() {
-        self.view.addSubview(scrollView)
-    
-//        self.view.addSubview(vStack)
-//        self.view.addSubview(itunesButton)
+        
+        self.view.addSubview(albumImageView)
+        self.view.addSubview(albumNameLabel)
+        self.view.addSubview(artistNameLabel)
+        self.view.addSubview(genreLabel)
+        self.view.addSubview(releasedAt)
+        self.view.addSubview(copyrightLabel)
+        self.view.addSubview(itunesButton)
+        
         self.albumNameLabel.text = album.name
         self.artistNameLabel.text = "by \(album.artistName)"
         self.copyrightLabel.text = album.copyrightInfo
         self.genreLabel.text = album.genres
         self.releasedAt.text = "Released: \(album.releaseDate)"
-
-        scrollView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30).isActive = true
-        scrollView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive = true
-        scrollView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 0).isActive = true
-        scrollView.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: 0).isActive = true
+        
+        albumImageView.centerXAnchor.constraint(equalTo: self.view.centerXAnchor).isActive = true
+        albumImageView.topAnchor.constraint(equalTo: self.view.topAnchor, constant: 100).isActive = true
+        albumImageView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30).isActive = true
+        albumImageView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive = true
+        
+        albumNameLabel.topAnchor.constraint(equalTo: albumImageView.bottomAnchor, constant: 20).isActive = true
+        albumNameLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30).isActive = true
+        albumNameLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive = true
+        
+        artistNameLabel.topAnchor.constraint(equalTo: albumNameLabel.bottomAnchor, constant: 20).isActive = true
+        artistNameLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30).isActive = true
+        artistNameLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive = true
+        
+        genreLabel.topAnchor.constraint(equalTo: artistNameLabel.bottomAnchor, constant: 20).isActive = true
+        genreLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30).isActive = true
+        genreLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive = true
+        
+        releasedAt.topAnchor.constraint(equalTo: genreLabel.bottomAnchor, constant: 20).isActive = true
+        releasedAt.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30).isActive = true
+        releasedAt.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive = true
+        
+        copyrightLabel.topAnchor.constraint(equalTo: releasedAt.bottomAnchor, constant: 20).isActive = true
+        copyrightLabel.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 30).isActive = true
+        copyrightLabel.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -30).isActive = true
+        
+        itunesButton.topAnchor.constraint(equalTo: copyrightLabel.bottomAnchor, constant: 20).isActive = true
+        itunesButton.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 20).isActive = true
+        itunesButton.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -20).isActive = true
+        itunesButton.bottomAnchor.constraint(equalTo: self.view.bottomAnchor, constant: -20).isActive = true
+        itunesButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
        ImageService.getImage(withStringURL: album.thumbnailImageURL) { [weak self] (image) in
            self?.albumImageView.image = image

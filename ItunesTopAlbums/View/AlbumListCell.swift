@@ -75,6 +75,5 @@ class AlbumListCell: UITableViewCell {
         vStack.leadingAnchor.constraint(equalTo: self.contentView.leadingAnchor, constant: albumImageView.bounds.width + 20.0).isActive = true
         vStack.trailingAnchor.constraint(equalTo: self.contentView.trailingAnchor, constant: -10).isActive = true
         vStack.topAnchor.constraint(equalTo: self.contentView.topAnchor, constant: 20).isActive = true
-//        vStack.bottomAnchor.constraint(equalTo: self.contentView.bottomAnchor, constant: -10).isActive = true
     }
 }
